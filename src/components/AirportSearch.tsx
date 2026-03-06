@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-import airports from 'airports';
-
+import airports from "airports-json";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +20,7 @@ import {
 export interface Airport {
   name: string;
   city: string;
-  country:string;
+  country: string;
   iata: string;
 }
 
@@ -32,21 +31,34 @@ interface AirportSearchProps {
 }
 
 export function AirportSearch({ onSelect, selectedAirport, placeholder = "Select airport..." }: AirportSearchProps) {
-  const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState("");
-
-  const filteredAirports = React.useMemo(() => {
-    if (!search) return [];
-    const lowerQuery = search.toLowerCase();
+    const [open, setOpen] = React.useState(false);
+    const [search, setSearch] = React.useState("");
+    const airportList: Airport[] = React.useMemo(() => {
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    return airports.filter(
-      (a: any) =>
-        (a.name && a.name.toLowerCase().includes(lowerQuery)) ||
-        (a.iata && a.iata.toLowerCase().includes(lowerQuery)) ||
-        (a.city && a.city.toLowerCase().includes(lowerQuery))
-    ).slice(0, 10);
+    return airports
+        .filter((a: any) => a.iata)
+        .map((a: any) => ({
+        name: a.name,
+        city: a.municipality || "",
+        country: a.iso_country || "",
+        iata: a.iata,
+        }));
     /* eslint-enable @typescript-eslint/no-explicit-any */
-  }, [search]);
+    }, []);
+
+    const filteredAirports = React.useMemo(() => {
+    if (!search) return [];
+    const q = search.toLowerCase();
+
+    return airportList
+        .filter(
+        (a) =>
+            a.name.toLowerCase().includes(q) ||
+            a.city.toLowerCase().includes(q) ||
+            a.iata.toLowerCase().includes(q)
+        )
+        .slice(0, 10);
+    }, [search, airportList]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
