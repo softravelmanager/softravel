@@ -34,8 +34,8 @@ export function AirportSearch({ onSelect, selectedAirport, placeholder = "Select
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState("");
     const airportList: Airport[] = React.useMemo(() => {
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    return airports
+    return Object.values(airports)
+        /* eslint-disable @typescript-eslint/no-explicit-any */
         .filter((a: any) => a.iata)
         .map((a: any) => ({
         name: a.name,
