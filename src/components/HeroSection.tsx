@@ -20,61 +20,16 @@
  import { cn } from "@/lib/utils";
  import { useToast } from "@/hooks/use-toast";
  import CityCombobox from "@/components/hero/CityCombobox";
+ import { AirportSearch, Airport } from "@/components/AirportSearch";
  import PassengerSelector, { PassengerCounts } from "@/components/hero/PassengerSelector";
  import HeroSlideshow from "@/components/hero/HeroSlideshow";
-
- const popularCities = [
-  // Italy
-   "Rome (FCO)",
-   "Milan (MXP)",
-   "Bologna (BLQ)",
-   "Venice (VCE)",
-   // Pakistan
-   "Karachi (KHI)",
-   "Lahore (LHE)",
-   "Islamabad (ISB)",
-   "Peshawar (PEW)",
-   "Multan (MUX)",
-   "Faisalabad (LYP)",
-   "Sialkot (SKT)",
-   // India
-   "Delhi (DEL)",
-   "Mumbai (BOM)",
-   "Bangalore (BLR)",
-   "Chennai (MAA)",
-   "Kolkata (CCU)",
-   "Hyderabad (HYD)",
-   "Ahmedabad (AMD)",
-   // Bangladesh
-   "Dhaka (DAC)",
-   "Chittagong (CGP)",
-   "Sylhet (ZYL)",
-   // Sri Lanka
-   "Colombo (CMB)",
-  // Australia
-  "Sydney (SYD)",
-  "Melbourne (MEL)",
-  "Brisbane (BNE)",
-  "Perth (PER)",
-  // USA
-  "New York (JFK)",
-  "Los Angeles (LAX)",
-  "Chicago (ORD)",
-  "San Francisco (SFO)",
-  "Miami (MIA)",
-  // Canada
-  "Toronto (YYZ)",
-  "Vancouver (YVR)",
-  "Montreal (YUL)",
-  "Calgary (YYC)",
- ];
  
  const HeroSection = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    departure: "",
-    destination: "",
+    departure: null as Airport | null,
+    destination: null as Airport | null,
     departureDate: undefined as Date | undefined,
     returnDate: undefined as Date | undefined,
    passengers: { adults: 1, children: 0, infants: 0 } as PassengerCounts,
@@ -170,12 +125,10 @@
                 <Label htmlFor="departure" className="text-foreground font-medium">
                   From
                 </Label>
-               <CityCombobox
-                 value={formData.departure}
-                 onChange={(value) => setFormData({ ...formData, departure: value })}
+               <AirportSearch
+                 selectedAirport={formData.departure}
+                 onSelect={(airport) => setFormData({ ...formData, departure: airport })}
                  placeholder="Search departure city"
-                 cities={popularCities}
-                 icon="departure"
                />
               </div>
 
@@ -184,12 +137,10 @@
                 <Label htmlFor="destination" className="text-foreground font-medium">
                   To
                 </Label>
-               <CityCombobox
-                 value={formData.destination}
-                 onChange={(value) => setFormData({ ...formData, destination: value })}
+               <AirportSearch
+                 selectedAirport={formData.destination}
+                 onSelect={(airport) => setFormData({ ...formData, destination: airport })}
                  placeholder="Search destination"
-                 cities={popularCities}
-                 icon="arrival"
                />
               </div>
 
