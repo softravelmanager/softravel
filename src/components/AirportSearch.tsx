@@ -45,6 +45,7 @@ export function AirportSearch({ onSelect, selectedAirport, placeholder = "Select
         }));
     /* eslint-enable @typescript-eslint/no-explicit-any */
     }, []);
+    console.log(airports, airportList);
 
     const filteredAirports = React.useMemo(() => {
     if (!search) return [];
