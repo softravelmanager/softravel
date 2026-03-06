@@ -36,12 +36,12 @@ export function AirportSearch({ onSelect, selectedAirport, placeholder = "Select
     const airportList: Airport[] = React.useMemo(() => {
     return airports
         /* eslint-disable @typescript-eslint/no-explicit-any */
-        .filter((a: any) => a.iata)
+        .filter((a: any) => a.iata_code)
         .map((a: any) => ({
         name: a.name,
         city: a.municipality || "",
         country: a.iso_country || "",
-        iata: a.iata,
+        iata: a.iata_code,
         }));
     /* eslint-enable @typescript-eslint/no-explicit-any */
     }, []);
